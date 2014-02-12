@@ -26,6 +26,7 @@ if ($row = mysql_fetch_array($result)) {
                 <option>Present</option>
                 <option>Absent</option>
                 <option>Complete</option>
+				<option>Compact</option>
             </select>
         </div>
         
@@ -175,8 +176,7 @@ if (array_key_exists('save', $_POST))
         
                     //chart_initialize
                     $chart = initialize_chart($chart, $chart1, $schedule, $from, $till, $con , $c_id);
-            
-                    //classes when user is present and it's count
+					//classes when user is present and it's count
                     report($con,$rollno,$c_id,$from,$till,$type , $schedule , $holid , $chart);
                    
                 }
@@ -223,18 +223,26 @@ if (array_key_exists('save', $_POST))
             
             $i = 0;
             $stu_len = count($stu_reg_list);
+			if($type=="Compact")
+				{
+					echo "<TABLE borderColor=#000000 cellSpacing=0 cellPadding=6 border=2>\n";
+					echo "<th>Roll number</th><th>Name</th><th>#present days</th><th>#absent days</th>"; 
+				}
+			
             while ($i < $stu_len) {
-
-                //printing name 
+				if($type!="Compact")
+				{
+				//printing name 
                 echo "<b><br>For user " . $stu_reg_list[$i] . "</b>";
                 
                 //printing user's id
                 echo "	(" . $stu_roll_list[$i] . ")<br><br>";
-
+				}
+				$comp_name = $stu_reg_list[$i];
                 $rollno = $stu_roll_list[$i];
                                 
                 //classes when user is present and it's count
-                report($con,$rollno,$c_id,$from,$till,$type , $schedule , $holid , $chart);
+                report($con,$rollno,$comp_name,$c_id,$from,$till,$type , $schedule , $holid , $chart);
 
                 $i = $i + 1;
             }//while loop end
