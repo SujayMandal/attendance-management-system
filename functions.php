@@ -76,9 +76,10 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
                 
             }
         } 
-        else if ($chart[$d][7] == $type || $type == "Complete") 
+        else if ($chart[$d][7] == $type || $type == "Complete" || $type=="Compact") 
         {
-            
+            if($type!="Compact")
+			{
             echo "<tr>";
             echo
             "<td>" . $chart[$d][1] . " </td>" .
@@ -89,8 +90,8 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
             "<td>" . $chart[$d][6] . " </td>" .
             "<td>" . $chart[$d][7] . " </td>";
             echo "</tr>";
-        }
-		if( $type == "Complete" ||  $type == "Compact")
+			}
+		if( $type == "Complete" ||  $type == "Compact" || $chart[$d][7] == $type)
 			{
 				 if ($chart[$d][7] == "Absent")
                 $absent_days++;
@@ -98,6 +99,8 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
                 $present_days++;
 
 			}
+		}
+		
         if ($chart[$d][0] == 2) 
         {
             //if two classes in a day
@@ -121,7 +124,7 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
 
                     
                 }
-				if( $type == "Complete" ||  $type == "Compact")
+				if( $type == "Complete" ||  $type == "Compact" || $chart[$d][9][7] == $type)
 			{
 				 if ($chart[$d][9][7] == "Absent")
                          $absent_days++;
@@ -168,7 +171,7 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
                 "<td>" . $chart[$d][10][6] . "</td> ";
                 echo "</tr>";
             }
-			if( $type == "Complete" ||  $type == "Compact")
+			if( $type == "Complete" ||  $type == "Compact" || $chart[$d][10][6] == $type)
 			{
 				 if ($chart[$d][10][6] == "Absent")
                     $absent_days++;
@@ -180,24 +183,26 @@ function print_chart($chart, $from, $till, $type, $holid,$comp_name,$comp_roll)
         //date increment
         $date = date("Y-m-d", strtotime("+1 day", strtotime($date)));
     }
-    
-    echo "</TABLE></HTML>";
-    echo "<br>";
-    echo "<br>";
+    if($type!="Compact")
+	{
+    	echo "</TABLE></HTML>";
+    	echo "<br>";
+    	echo "<br>";
+	}
     
     if ($type == "Present" || $type == "Complete")
+	{
         echo "# Present classes =   " . $present_days;
-    echo "<br>";
-    echo "<br>";
+    	echo "<br>";
+    	echo "<br>";
+	}
     if ($type == "Absent" || $type == "Complete")
         echo "# Absent classes  =   " . $absent_days;
 	if($type!="Compact")
 	    echo "<br><br>  -   -   -   -   -   -   -   -   -   -<br><br>";
 	else
 	{
-		echo "<tr";
-		echo "<br>".$comp_roll."  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ".$comp_name." &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$present_days." &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ".$absent_days."    ";
-		echo "<tr>";
+		$_SESSION['tab1'].="<tr><td>".$comp_roll."</td><td>".$comp_name."</td><td>".$present_days."</td><td>".$absent_days."</td></tr>";
 	}
 }
 

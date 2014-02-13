@@ -1,6 +1,7 @@
 <?php
     session_start();
     include('dbconnect.php');
+	$_SESSION['tab1']=" ";
     $la=$_SESSION['loginas']= $_POST['loginas'];
     $_SESSION['id']=$id=$_POST['id'];
     $password=$_POST['password'];
